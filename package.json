@@ -7,10 +7,16 @@
   "author": "Eric Henderson <henderea@gmail.com>",
   "license": "MIT",
   "private": false,
+  "scripts": {
+    "test": "mocha"
+  },
   "dependencies": {
-    "get-caller-file": "^2.0.1",
+    "get-caller-file": "^2.0.0",
     "lodash": "^4.17.11",
     "require-directory": "^2.1.1",
-    "string-width": "^3.0.0"
+    "string-width": "^2.1.1"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0"
   }
 }
