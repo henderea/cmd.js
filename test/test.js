@@ -18,12 +18,71 @@ describe('Command', function() {
                     expect(result).to.eql(argv);
                 });
             });
+            describe('#fullName', function() {
+                it('should use the parsed argv', function() {
+                    let argv = ['script', 'test', 'test2'];
+                    let cmd = command().parse(argv);
+                    expect(cmd.fullName).to.eql('script');
+                });
+            });
+            describe('#usage', function() {
+                it('should use the command name in place of $0', function() {
+                    let argv = ['script', 'test', 'test2'];
+                    let cmd = command().usage('Usage: $0 <param> [param2...]').parse(argv);
+                    expect(cmd.usageText).to.eql('Usage: script <param> [param2...]');
+                });
+                it('should prefix the command name iin the absence of $0', function() {
+                    let argv = ['script', 'test', 'test2'];
+                    let cmd = command().usage('<param> [param2...]').parse(argv);
+                    expect(cmd.usageText).to.eql('script <param> [param2...]');
+                });
+            });
             describe('#command', function() {
                 it('should take out the global parts of argv for sub-commands', function() {
                     let result = null;
                     let argv = ['script', 'command', 'test', 'test2'];
                     command(cmd => cmd.command(command().name('command').action(argv => result = argv))).parse(argv);
                     expect(result).to.eql(argv.slice(1));
+                });
+                describe('#fullName', function() {
+                    it('should show the full name of direct sub-commands', function() {
+                        let argv = ['script', 'test', 'test2'];
+                        let subCommand = command().name('command');
+                        command(cmd => cmd.command(subCommand)).parse(argv);
+                        expect(subCommand.fullName).to.eql('script command');
+                    });
+                    it('should show the full name of second-level sub-commands', function() {
+                        let argv = ['script', 'test', 'test2'];
+                        let subSubCommand = command().name('command2');
+                        command(cmd => cmd.command(c => c.name('command').command(subSubCommand))).parse(argv);
+                        expect(subSubCommand.fullName).to.eql('script command command2');
+                    });
+                });
+                describe('#usage', function() {
+                    it('should use the full name of direct sub-commands in place of $0', function() {
+                        let argv = ['script', 'test', 'test2'];
+                        let subCommand = command().name('command').usage('Usage: $0 <param> [param2...]');
+                        command(cmd => cmd.command(subCommand)).parse(argv);
+                        expect(subCommand.usageText).to.eql('Usage: script command <param> [param2...]');
+                    });
+                    it('should prefix the full name of direct sub-commands in the absence of $0', function() {
+                        let argv = ['script', 'test', 'test2'];
+                        let subCommand = command().name('command').usage('<param> [param2...]');
+                        command(cmd => cmd.command(subCommand)).parse(argv);
+                        expect(subCommand.usageText).to.eql('script command <param> [param2...]');
+                    });
+                    it('should use the full name of second-level sub-commands in place of $0', function() {
+                        let argv = ['script', 'test', 'test2'];
+                        let subSubCommand = command().name('command2').usage('Usage: $0 <param> [param2...]');
+                        command(cmd => cmd.command(c => c.name('command').command(subSubCommand))).parse(argv);
+                        expect(subSubCommand.usageText).to.eql('Usage: script command command2 <param> [param2...]');
+                    });
+                    it('should prefix the full name of second-level sub-commands in the absence of $0', function() {
+                        let argv = ['script', 'test', 'test2'];
+                        let subSubCommand = command().name('command2').usage('<param> [param2...]');
+                        command(cmd => cmd.command(c => c.name('command').command(subSubCommand))).parse(argv);
+                        expect(subSubCommand.usageText).to.eql('script command command2 <param> [param2...]');
+                    });
                 });
             });
         });
