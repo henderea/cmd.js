@@ -12,12 +12,12 @@
   },
   "dependencies": {
     "expect.js": "^0.3.1",
-    "get-caller-file": "^2.0.0",
+    "get-caller-file": "^2.0.5",
     "lodash": "^4.17.11",
     "require-directory": "^2.1.1",
-    "string-width": "^3.0.0"
+    "string-width": "^4.1.0"
   },
   "devDependencies": {
-    "mocha": "^5.2.0"
+    "mocha": "^6.1.3"
   }
 }
