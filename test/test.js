@@ -159,17 +159,17 @@ describe('Option', function() {
                 expect(opt._type).to.eql(OptionType.boolean);
             });
             it('should throw on invalid type parameters', function() {
-                expect(() => new Option().type('fake')).to.throwException(function(e) {
+                expect(new Option().type).withArgs('fake').to.throwException(function(e) {
                     expect(e).to.be.a(CmdError);
                     expect(e.message).to.eql(`Invalid type argument. Expected argument to be in ('boolean'), but encountered 'fake'.`);
                 });
-                expect(() => new Option().type(0)).to.throwException(function(e) {
+                expect(new Option().type).withArgs(0).to.throwException(function(e) {
                     expect(e).to.be.a(CmdError);
                     expect(e.message).to.eql(`Invalid type argument. Expected OptionType or string but received number.`);
                 });
             });
             it('should throw on missing type parameters', function() {
-                expect(() => new Option().type()).to.throwException(function(e) {
+                expect(new Option().type).withArgs().to.throwException(function(e) {
                     expect(e).to.be.a(CmdError);
                     expect(e.message).to.eql(`Not enough arguments provided. Expected 1 but received 0.`);
                 });
@@ -181,13 +181,13 @@ describe('Option', function() {
                 expect(opt._names).to.eql(['hi', 'bye']);
             });
             it('should throw on invalid names parameters', function() {
-                expect(() => new Option().names(0)).to.throwException(function(e) {
+                expect(new Option().names).withArgs(0).to.throwException(function(e) {
                     expect(e).to.be.a(CmdError);
                     expect(e.message).to.eql(`Invalid names argument. Expected string but received number.`);
                 });
             });
             it('should throw on missing names parameters', function() {
-                expect(() => new Option().names()).to.throwException(function(e) {
+                expect(new Option().names).withArgs().to.throwException(function(e) {
                     expect(e).to.be.a(CmdError);
                     expect(e.message).to.eql(`Not enough arguments provided. Expected 1 but received 0.`);
                 });
@@ -199,11 +199,11 @@ describe('Option', function() {
                 expect(opt._nargs).to.eql(1);
             });
             it('should throw on invalid nargs parameters', function() {
-                expect(() => new Option().nargs('')).to.throwException(function(e) {
+                expect(new Option().nargs).withArgs('').to.throwException(function(e) {
                     expect(e).to.be.a(CmdError);
                     expect(e.message).to.eql(`Invalid nargs argument. Expected number but received string.`);
                 });
-                expect(() => new Option().nargs(-1)).to.throwException(function(e) {
+                expect(new Option().nargs).withArgs(-1).to.throwException(function(e) {
                     expect(e).to.be.a(CmdError);
                     expect(e.message).to.eql(`Invalid nargs argument. Expected argument to be >= 0, but encountered -1.`);
                 });
